@@ -7,18 +7,19 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  messages: any;
   messagesDummy: Array<any> = [ {
     "alert" : "",
     "carrierMess" : "Message sent to Driver to initiate Order",
     "delay" : 0,
-    "message" : "This is a reminder to turn on tracking for the XPO load you’ll pick up in 2 hours.",
+    "message" : "This is a reminder to turn on tracking for the XPO load you’ll pick up in 2 hours. Are you going to pick up the load on time?",
     "time" : "11:00",
     "toDriver" : true
   }, {
     "alert" : "",
     "carrierMess" : "Driver travelling on time.",
     "delay" : 0,
-    "message" : "Have you been loaded with the correct weight and quantity per the BOL. Say YES or NO.",
+    "message" : "Have you been loaded with the correct weight and quantity per the B O L. Say YES or NO.",
     "time" : "12:00",
     "toDriver" : true
   }, {
@@ -43,11 +44,14 @@ export class HomePage {
   constructor(public navCtrl: NavController, private db: AngularFireDatabase) {
     this.i=0;
     this.bidding = this.db.list('/itracks/messages');
+    this.db.list('/itracks/messages').valueChanges().subscribe((res) => {
+      this.messages = res;
+     });
   }
 
   sendMe(){
-    console.log(this.messagesDummy[this.i]);
-    this.bidding.update((this.i).toString(),this.messagesDummy[this.i]);
+    console.log(this.messages.length);
+    this.bidding.update(this.messages.length.toString(),this.messagesDummy[this.i]);
     this.i++;
 
   }
