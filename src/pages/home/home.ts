@@ -50,7 +50,7 @@ export class HomePage {
   }
 
   sendMe(){
-    console.log(this.messages.length);
+    //console.log(this.messages.length);
     this.bidding.update(this.messages.length.toString(),this.messagesDummy[this.i]);
     this.i++;
 
